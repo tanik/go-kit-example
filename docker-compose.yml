@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  string_service:
+    build:
+      dockerfile: ./string_service/Dockerfile
+    command: |
+      bash -c "go mod tidy && go run ."
+    ports:
+      - '8080:8080'
