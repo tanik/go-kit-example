@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go-kit-example/middlewares"
-	"go-kit-example/services"
-	"go-kit-example/transports"
+	"go-kit-example/string_service/middlewares"
+	"go-kit-example/string_service/services"
+	"go-kit-example/string_service/transports"
 	"net/http"
 	"os"
 

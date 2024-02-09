@@ -1,4 +1,4 @@
-module go-kit-example
+module go-kit-example/string_service
 
 go 1.21.6
 

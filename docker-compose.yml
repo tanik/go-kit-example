@@ -8,3 +8,4 @@ services:
       bash -c "go mod tidy && go run ."
     ports:
       - '8080:8080'
+  
