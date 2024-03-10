@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"go-kit-example/string_service/middlewares"
 	"go-kit-example/string_service/services"
 	"go-kit-example/string_service/transports"
@@ -14,6 +15,10 @@ import (
 
 // Transports expose the service to the network. In this first example we utilize JSON over HTTP.
 func main() {
+	var (
+		listen = flag.String("listen", ":8081", "HTTP listen address")
+	)
+	flag.Parse()
 	svc := services.StringServiceImpl{}
 	logger := log.NewLogfmtLogger(os.Stderr)
 
@@ -33,8 +38,9 @@ func main() {
 		transports.DecodeCountRequest,
 		transports.EncodeResponse,
 	)
+	logger.Log("msg", "HTTP", "addr", *listen)
 
 	http.Handle("/uppercase", uppercaseHandler)
 	http.Handle("/count", countHandler)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(*listen, nil)
 }
