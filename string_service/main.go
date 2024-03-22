@@ -48,12 +48,11 @@ func main() {
 	}
 
 	go func() {
-		baseServer := grpc.NewServer()
 		server := grpc.NewServer()
 		pb.RegisterStringServiceServer(server, grpcServer)
 		level.Info(logger).Log("msg", "Server started successfully 🚀")
 		reflection.Register(server)
-		baseServer.Serve(grpcListener)
+		server.Serve(grpcListener)
 	}()
 
 	level.Error(logger).Log("exit", <-errs)

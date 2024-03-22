@@ -19,17 +19,18 @@ type gRPCServer struct {
 
 // NewGRPCServer initializes a new gRPC server
 func NewGRPCServer(endpoints endpoints.Endpoints, logger log.Logger) pb.StringServiceServer {
-	uppercaseHandler := gt.NewServer(
-		endpoints.Uppercase,
-		decodeUppercaseRequest,
-		encodeUppercaseResponse,
-	)
-	countHandler := gt.NewServer(
-		endpoints.Count,
-		decodeCountRequest,
-		encodeCountResponse,
-	)
-	return &gRPCServer{uppercase: uppercaseHandler, count: countHandler}
+	return &gRPCServer{
+		uppercase: gt.NewServer(
+			endpoints.Uppercase,
+			decodeUppercaseRequest,
+			encodeUppercaseResponse,
+		),
+		count: gt.NewServer(
+			endpoints.Count,
+			decodeCountRequest,
+			encodeCountResponse,
+		),
+	}
 }
 
 func (s *gRPCServer) Uppercase(ctx context.Context, req *pb.UppercaseRequest) (*pb.UppercaseResponse, error) {
@@ -55,7 +56,10 @@ func decodeUppercaseRequest(_ context.Context, request interface{}) (interface{}
 
 func encodeUppercaseResponse(_ context.Context, response interface{}) (interface{}, error) {
 	resp := response.(endpoints.UppercaseRes)
-	return &pb.UppercaseResponse{Val: resp.Value, Err: resp.Error.Error()}, nil
+	if resp.Error != nil {
+		return &pb.UppercaseResponse{Val: "", Err: resp.Error.Error()}, nil
+	}
+	return &pb.UppercaseResponse{Val: resp.Value, Err: ""}, nil
 }
 
 func decodeCountRequest(_ context.Context, request interface{}) (interface{}, error) {
