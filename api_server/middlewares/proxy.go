@@ -6,11 +6,15 @@ import (
 	"fmt"
 	services "go-kit-example/api_server/services"
 	transports "go-kit-example/api_server/transports"
-	"net/url"
+
+	pb "go-kit-example/string_service/gen/go/proto"
+
 	"strings"
 	"time"
 
 	"golang.org/x/time/rate"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/sony/gobreaker"
 
@@ -19,7 +23,7 @@ import (
 	"github.com/go-kit/kit/ratelimit"
 	"github.com/go-kit/kit/sd"
 	"github.com/go-kit/kit/sd/lb"
-	httptransport "github.com/go-kit/kit/transport/http"
+	grpctransport "github.com/go-kit/kit/transport/grpc"
 	"github.com/go-kit/log"
 )
 
@@ -87,21 +91,18 @@ func (mw proxymw) Uppercase(s string) (string, error) {
 }
 
 func makeUppercaseProxy(_ context.Context, instance string) endpoint.Endpoint {
-	if !strings.HasPrefix(instance, "http") {
-		instance = "http://" + instance
-	}
-	u, err := url.Parse(instance)
+	conn, err := grpc.Dial(instance, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}
-	if u.Path == "" {
-		u.Path = "/uppercase"
-	}
-	return httptransport.NewClient(
-		"GET",
-		u,
-		transports.EncodeRequest,
-		transports.DecodeUppercaseResponse,
+
+	return grpctransport.NewClient(
+		conn,
+		"proto.StringService",
+		"Uppercase",
+		encodeUppercaseRequest,
+		decodeUppercaseResponse,
+		pb.UppercaseResponse{},
 	).Endpoint()
 }
 
@@ -111,4 +112,14 @@ func split(s string) []string {
 		a[i] = strings.TrimSpace(a[i])
 	}
 	return a
+}
+
+func encodeUppercaseRequest(_ context.Context, request interface{}) (interface{}, error) {
+	req := request.(transports.UppercaseRequest)
+	return &pb.UppercaseRequest{Str: req.S}, nil
+}
+
+func decodeUppercaseResponse(_ context.Context, grpcReply interface{}) (interface{}, error) {
+	reply := grpcReply.(*pb.UppercaseResponse)
+	return transports.UppercaseResponse{V: reply.Val, Err: reply.Err}, nil
 }

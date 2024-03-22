@@ -4,7 +4,7 @@ import (
 	services "go-kit-example/api_server/services"
 	"time"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 )
 
 func LoggingMiddleware(logger log.Logger) services.ServiceMiddleware {

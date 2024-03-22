@@ -4,6 +4,6 @@ ENV LANG C.UTF-8
 
 RUN mkdir /myapp
 
-WORKDIR /myapp
+COPY . /myapp
 
-COPY api_server .
+WORKDIR /myapp/api_server

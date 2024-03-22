@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "go-kit-example/string_service/gen/go/proto/string";
+
+service StringService {
+  rpc Uppercase(UppercaseRequest) returns (UppercaseResponse);
+  rpc Count(CountRequest) returns (CountResponse);
+}
+
+message UppercaseRequest {
+  string str = 1;
+}
+
+message UppercaseResponse {
+  string val = 1;
+  string err = 2;
+}
+
+message CountRequest {
+  string str = 1;
+}
+
+message CountResponse {
+  uint64 val = 1;
+}

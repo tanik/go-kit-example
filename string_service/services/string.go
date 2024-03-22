@@ -1,28 +1,38 @@
 package services
 
 import (
+	"context"
 	"errors"
 	"strings"
+
+	"github.com/go-kit/log"
 )
 
-// StringService provides operations on strings.
-type StringService interface {
-	Uppercase(string) (string, error)
-	Count(string) int
+type stringService struct {
+	logger log.Logger
 }
 
-// stringService is a concrete implementation of StringService
-type StringServiceImpl struct{}
+type StringService interface {
+	Uppercase(context.Context, string) (string, error)
+	Count(context.Context, string) uint64
+}
 
-func (StringServiceImpl) Uppercase(s string) (string, error) {
-	if s == "" {
+// NewService func initializes a service
+func NewService(logger log.Logger) StringService {
+	return &stringService{
+		logger: logger,
+	}
+}
+
+func (s stringService) Uppercase(ctx context.Context, str string) (string, error) {
+	if str == "" {
 		return "", ErrEmpty
 	}
-	return strings.ToUpper(s), nil
+	return strings.ToUpper(str), nil
 }
 
-func (StringServiceImpl) Count(s string) int {
-	return len(s)
+func (s stringService) Count(ctx context.Context, str string) uint64 {
+	return uint64(len(str))
 }
 
 // ErrEmpty is returned when an input string is empty.
