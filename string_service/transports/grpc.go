@@ -6,7 +6,7 @@ import (
 	"github.com/go-kit/log"
 
 	"go-kit-example/string_service/endpoints"
-	pb "go-kit-example/string_service/gen/go/proto/v1"
+	pb "go-kit-example/string_service/gen/go/proto"
 	"go-kit-example/string_service/middlewares"
 
 	gt "github.com/go-kit/kit/transport/grpc"

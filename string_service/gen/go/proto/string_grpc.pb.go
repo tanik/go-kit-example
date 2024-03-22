@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             (unknown)
-// source: proto/v1/string.proto
+// source: proto/string.proto
 
 package string
 
@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	StringService_Uppercase_FullMethodName = "/proto.v1.StringService/Uppercase"
-	StringService_Count_FullMethodName     = "/proto.v1.StringService/Count"
+	StringService_Uppercase_FullMethodName = "/proto.StringService/Uppercase"
+	StringService_Count_FullMethodName     = "/proto.StringService/Count"
 )
 
 // StringServiceClient is the client API for StringService service.
@@ -129,7 +129,7 @@ func _StringService_Count_Handler(srv interface{}, ctx context.Context, dec func
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var StringService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.v1.StringService",
+	ServiceName: "proto.StringService",
 	HandlerType: (*StringServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -142,5 +142,5 @@ var StringService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/v1/string.proto",
+	Metadata: "proto/string.proto",
 }

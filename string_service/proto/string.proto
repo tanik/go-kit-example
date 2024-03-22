@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package proto.v1;
+package proto;
 
-option go_package = "go-kit-example/string_service/gen/go/proto/v1/string";
+option go_package = "go-kit-example/string_service/gen/go/proto/string";
 
 service StringService {
   rpc Uppercase(UppercaseRequest) returns (UppercaseResponse);

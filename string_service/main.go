@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	endpoint "go-kit-example/string_service/endpoints"
-	pb "go-kit-example/string_service/gen/go/proto/v1"
+	pb "go-kit-example/string_service/gen/go/proto"
 	"go-kit-example/string_service/services"
 	transport "go-kit-example/string_service/transports"
 	"net"

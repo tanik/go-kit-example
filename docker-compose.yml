@@ -3,19 +3,19 @@ version: '3.9'
 services:
   api_server:
     build:
-      dockerfile: ./api_server/Dockerfile
+      dockerfile: ./Dockerfile.api_server
     command: |
       bash -c "go mod tidy && go run . --proxy string_service1:8081,string_service2:8081"
     ports:
       - '8080:8080'
   string_service1:
     build:
-      dockerfile: ./string_service/Dockerfile
+      dockerfile: ./Dockerfile.string_service
     command: |
       bash -c "go mod tidy && go run . --listen :8081"
   string_service2:
     build:
-      dockerfile: ./string_service/Dockerfile
+      dockerfile: ./Dockerfile.string_service
     command: |
       bash -c "go mod tidy && go run . --listen :8081"
    
