@@ -7,6 +7,7 @@ import (
 
 	"go-kit-example/string_service/endpoints"
 	pb "go-kit-example/string_service/gen/go/proto/v1"
+	"go-kit-example/string_service/middlewares"
 
 	gt "github.com/go-kit/kit/transport/grpc"
 )
@@ -21,12 +22,12 @@ type gRPCServer struct {
 func NewGRPCServer(endpoints endpoints.Endpoints, logger log.Logger) pb.StringServiceServer {
 	return &gRPCServer{
 		uppercase: gt.NewServer(
-			endpoints.Uppercase,
+			middlewares.LoggingMiddleware(log.With(logger, "method", "uppercase"))(endpoints.Uppercase),
 			decodeUppercaseRequest,
 			encodeUppercaseResponse,
 		),
 		count: gt.NewServer(
-			endpoints.Count,
+			middlewares.LoggingMiddleware(log.With(logger, "method", "count"))(endpoints.Count),
 			decodeCountRequest,
 			encodeCountResponse,
 		),
